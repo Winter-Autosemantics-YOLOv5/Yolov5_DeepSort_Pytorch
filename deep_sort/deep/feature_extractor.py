@@ -8,15 +8,35 @@ import sys
 # so that init does not execute in the package
 sys.path.append('deep_sort/deep/reid')
 from torchreid import models
+from torchreid import utils
 
+model_zoo = {
+    'osnet_x0_25': 'https://drive.google.com/u/0/uc?id=1z1UghYvOTtjx7kEoRfmqSMu-z62J6MAj&export=download',
+    'osnet_x0_5': '',
+    'osnet_x0_75': '',
+    'osnet_x1_0': '',
+}
+
+def try_download_model(model_type):
+    import gdown
+    file_path = None
+    
+    if model_type in model_zoo.keys():
+        filename = gdown(model_zoo[model_type])
+
+    return file_path
 
 class Extractor(object):
-    def __init__(self, model_type, use_cuda=True):
+    def __init__(self, model_type, model_path=None, use_cuda=True):
         self.device = "cuda" if torch.cuda.is_available() and use_cuda else "cpu"
         self.input_width = 128
         self.input_height = 256
 
-        self.model = models.build_model(name=model_type, num_classes=1000)
+        self.model = models.build_model(name=model_type, num_classes=1, loss='triplet')
+
+        if model_path:
+            utils.load_pretrained_weights(self.model, model_path)
+
         self.model.to(self.device)
         self.model.eval()
 
