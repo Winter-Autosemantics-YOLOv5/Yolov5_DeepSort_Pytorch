@@ -1,15 +1,12 @@
 # remove already exist .txt files
-# rm ./MOT16_eval/TrackEval/data/trackers/mot_challenge/MyDataset-test/data/data/*.txt
+rm ./MOT16_eval/TrackEval/data/trackers/mot_challenge/MyDataset-test/data/data/*.txt
 
 # copy Yolov5 + DeepSort results
-cp ./runs/track/exp/1.txt \
+cp ./runs/track/exp/*.txt \
     ./MOT16_eval/TrackEval/data/trackers/mot_challenge/MyDataset-test/data/data
 
-cp ./runs/track/exp/2.txt \
-    ./MOT16_eval/TrackEval/data/trackers/mot_challenge/MyDataset-test/data/data
-
-cp ./runs/track/exp/3.txt \
-    ./MOT16_eval/TrackEval/data/trackers/mot_challenge/MyDataset-test/data/data
+# remove txt files on runs folder
+rm ./runs/track/exp/*.txt
 
 # rename model results
 mv ./MOT16_eval/TrackEval/data/trackers/mot_challenge/MyDataset-test/data/data/1.txt \
